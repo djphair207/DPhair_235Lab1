@@ -1,21 +1,89 @@
 #ifndef TODOLIST_H
 #define TODOLIST_H
 
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
 #include "TodoListInterface.h"
+
+using namespace std;
 
 class TodoList : public TodoListInterface {
 protected:
-  string *array;
+  vector<string> tasks;
 public:
   TodoList() {      //CONSTRUCTOR
-    array = new string[0];
-		// This also needs to be able to read in what is in the file
+		//cout << "In constructor" << endl;
+		ifstream fin("TODOList.txt");
+		string line;
+		if(fin.is_open()) {
+			while(getline(fin,line)) {		
+				tasks.push_back(line);
+			}
+			fin.close();
+		}
   }
-	
-  
-//Insert the functions
 
+	virtual ~TodoList() {		//DESTRUCTOR
+		//cout << "In destructor" << endl;
+		ofstream fout;
+		fout.open("TODOList.txt", ofstream::out | ofstream::trunc);
+		for(int i = 0; i < tasks.size(); i++) {
+			fout << tasks[i] << endl;
+		}
+		fout.close();
+	}
+
+  virtual void add(string _duedate, string _task) {	//ADD FUNC
+		//cout << "In add" << endl;
+		tasks.push_back(_duedate + " - " + _task);
+	}
+
+  virtual int remove(string _task) {	//REMOVE FUNC
+		//cout << "In remove" << endl;
+		int tasksRemoved = 0;
+		for(int i = 0; i < tasks.size(); i++){
+			//cout << currentTask << endl;
+			if(tasks.at(i).find(_task) != string::npos){
+				//cout << "Found it!" << endl;
+				//cout << currentTask << endl;		//DEBUG
+				for(int j = i; j < tasks.size() - 1; j++){
+					tasks.at(j) = tasks.at(j+1);
+				}
+				tasks.pop_back();
+				tasksRemoved++;
+			}
+		}
+		if(tasksRemoved == 0){
+			cout << "No task with that name." << endl;
+			return 1;
+		}
+		return 0;
+	}
+
+  virtual void printTodoList(){							//PRINT FULL LIST FUNC
+		//cout << "In printList" << endl;
+		for(int i = 0; i < tasks.size(); i++) {
+			cout << tasks.at(i) << endl;
+		}
+	}
+    
+  virtual void printDaysTasks(string _date) {		//PRINT DAY LIST FUNC
+		//cout << "In printDayList" << endl;
+		int tasksPrinted = 0;
+		for(int i = 0; i < tasks.size(); i++){
+			if(tasks.at(i).find(_date) != string::npos){
+				cout << tasks.at(i) << endl;
+				tasksPrinted++;
+			}
+		}
+		if(tasksPrinted == 0){
+			cout << "No tasks on that day." << endl;
+		}
+	}
 
 };
 
 #endif
+	

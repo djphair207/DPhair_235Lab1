@@ -1,0 +1,28 @@
+Functions:
+  Add Task
+    ./TODO add [date] [task]
+  Remove Task
+    ./TODO remove [task]
+  Print All Tasks
+    ./TODO printList
+  Print All Tasks for a specific day
+    ./TODO printDay [day]
+
+Must be run using command-line arguments
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

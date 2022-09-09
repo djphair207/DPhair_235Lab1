@@ -46,12 +46,7 @@ public:
 		for(int i = 0; i < tasks.size(); i++){
 			//cout << currentTask << endl;
 			if(tasks.at(i).find(_task) != string::npos){
-				//cout << "Found it!" << endl;
-				//cout << currentTask << endl;		//DEBUG
-				for(int j = i; j < tasks.size() - 1; j++){
-					tasks.at(j) = tasks.at(j+1);
-				}
-				tasks.pop_back();
+				tasks.erase(tasks.begin() + i);
 				tasksRemoved++;
 			}
 		}

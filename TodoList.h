@@ -47,6 +47,7 @@ public:
 			//cout << currentTask << endl;
 			if(tasks.at(i).find(_task) != string::npos){
 				tasks.erase(tasks.begin() + i);
+				i--;
 				tasksRemoved++;
 			}
 		}
